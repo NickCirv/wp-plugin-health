@@ -1,0 +1,28 @@
+{
+  "name": "wp-plugin-health",
+  "version": "1.0.0",
+  "description": "CLI health checker for WordPress plugins — 15 quality signals, 0-100 score",
+  "main": "index.js",
+  "bin": {
+    "wp-plugin-health": "./index.js"
+  },
+  "scripts": {
+    "start": "node index.js",
+    "test": "node index.js akismet && node index.js --json akismet | node -e \"const d = JSON.parse(require('fs').readFileSync('/dev/stdin','utf8')); process.exit(d.score > 0 ? 0 : 1)\" && echo 'Tests passed'"
+  },
+  "keywords": [
+    "wordpress",
+    "plugin",
+    "health",
+    "audit",
+    "wp",
+    "cli",
+    "wporg"
+  ],
+  "author": "NickCirv",
+  "license": "MIT",
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "preferGlobal": false
+}
