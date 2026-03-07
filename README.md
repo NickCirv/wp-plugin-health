@@ -153,3 +153,23 @@ npx wp-plugin-health akismet --json
 ## License
 
 MIT
+
+## Contributing
+
+PRs welcome! If you have a funny idea or improvement:
+
+1. Fork the repo
+2. Create your feature branch (`git checkout -b feature/amazing-idea`)
+3. Commit your changes
+4. Push to the branch (`git push origin feature/amazing-idea`)
+5. Open a Pull Request
+
+Found a bug? [Open an issue](https://github.com/NickCirv/wp-plugin-health/issues).
+
+---
+
+If this made you mass-exhale through your nose, mass-hit that star button.
+
+---
+
+If this made you mass-exhale through your nose, mass-hit that star button.
