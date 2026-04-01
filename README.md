@@ -1,3 +1,5 @@
+![Banner](banner.svg)
+
 # wp-plugin-health
 
 ![Health Check](https://img.shields.io/badge/WP%20Plugin%20Health-CLI-green?style=for-the-badge&logo=wordpress)
