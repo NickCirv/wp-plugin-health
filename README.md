@@ -1,14 +1,19 @@
-![Banner](banner.svg)
+![wp-plugin-health — audit any WordPress plugin from the command line, 15 signals, 0–100 health score](assets/banner.png)
 
-# wp-plugin-health
+<div align="center">
 
-![Health Check](https://img.shields.io/badge/WP%20Plugin%20Health-CLI-green?style=for-the-badge&logo=wordpress)
-![Zero Dependencies](https://img.shields.io/badge/zero-dependencies-blue?style=for-the-badge)
-![Node.js](https://img.shields.io/badge/node-%3E%3D14-brightgreen?style=for-the-badge&logo=node.js)
-![License](https://img.shields.io/badge/license-MIT-lightgrey?style=for-the-badge)
+**Instant WordPress plugin health reports from the command line. Zero dependencies. WP.org API data only.**
 
-**Instant WordPress plugin health reports from the command line.**
-Zero dependencies. 15 quality signals. 0–100 health score.
+![license](https://img.shields.io/badge/license-MIT-blue?labelColor=0B0A09)
+![dependencies](https://img.shields.io/badge/dependencies-0-brightgreen?labelColor=0B0A09)
+![node](https://img.shields.io/badge/node-%3E%3D14-brightgreen?labelColor=0B0A09)
+![signals](https://img.shields.io/badge/health%20signals-15-34D399?labelColor=0B0A09)
+
+</div>
+
+---
+
+`wp-plugin-health` scores any WordPress.org plugin across 15 quality signals and returns a 0–100 health score — in under a second, straight from the WP.org Plugin Info API. No local install, no API keys, no rate limits.
 
 ```
 WP PLUGIN HEALTH CHECK
@@ -41,38 +46,29 @@ Vitals:
 Diagnosis: "Strong vitals. Could address: outdated php requirement."
 ```
 
----
+## Install
+
+No install, no npm account — runs straight from GitHub with zero dependencies:
+
+```bash
+npx github:NickCirv/wp-plugin-health akismet
+```
 
 ## Usage
 
 ```bash
-# One-time, no install needed
-npx wp-plugin-health akismet
+# audit a plugin by slug
+npx github:NickCirv/wp-plugin-health akismet
 
-# Check any plugin by slug
-npx wp-plugin-health woocommerce
-npx wp-plugin-health wordfence
+# machine-readable JSON
+npx github:NickCirv/wp-plugin-health akismet --json
 
-# Machine-readable JSON output
-npx wp-plugin-health akismet --json
+# compare two plugins side by side
+npx github:NickCirv/wp-plugin-health --compare akismet wordfence
 
-# Compare two plugins side by side
-npx wp-plugin-health --compare akismet wordfence
-
-# Help
-npx wp-plugin-health --help
+# show help
+npx github:NickCirv/wp-plugin-health --help
 ```
-
-### Install globally (optional)
-
-```bash
-npm install -g wp-plugin-health
-wp-plugin-health akismet
-```
-
----
-
-## Flags
 
 | Flag | Description |
 |------|-------------|
@@ -80,9 +76,7 @@ wp-plugin-health akismet
 | `--compare <slug1> <slug2>` | Compare two plugins side by side |
 | `--help`, `-h` | Show usage |
 
----
-
-## The 15 Health Signals
+## The 15 health signals
 
 | # | Signal | Weight | What's checked |
 |---|--------|--------|----------------|
@@ -93,7 +87,7 @@ wp-plugin-health akismet
 | 5 | Tested up to | 8 | Should match latest WP version |
 | 6 | Requires PHP | 5 | PHP 8.0+ preferred |
 | 7 | Support resolved % | 8 | >75% = healthy author responsiveness |
-| 8 | Number of tags | 3 | 3–5 optimal for discovery |
+| 8 | Number of tags | 3 | 3–5 optimal for discoverability |
 | 9 | Donate link | 2 | Signals maintenance commitment |
 | 10 | Total downloads | 5 | Lifetime adoption |
 | 11 | Release count | 5 | Activity and longevity |
@@ -102,12 +96,10 @@ wp-plugin-health akismet
 | 14 | Contributors | 5 | Team vs solo maintainer |
 | 15 | Compatibility data | 3 | Community compatibility signals |
 
----
-
-## JSON Output
+## JSON output
 
 ```bash
-npx wp-plugin-health akismet --json
+npx github:NickCirv/wp-plugin-health akismet --json
 ```
 
 ```json
@@ -132,46 +124,22 @@ npx wp-plugin-health akismet --json
 }
 ```
 
----
+## Technical details
 
-## Technical Details
-
-- **Zero dependencies** — uses Node.js built-in `https` module
-- **Node.js 14+** — no transpilation needed
-- **15s timeout** with `AbortController`-style destruction
+- **Zero dependencies** — uses Node.js built-in `https` module only
+- **Node.js 14+** — no transpilation, no build step
+- **15s timeout** with `AbortController`-style destruction on hang
 - **Graceful errors** for non-existent slugs
-- Data sourced from the official [WP.org Plugin Info API](https://codex.wordpress.org/WordPress.org_API)
+- Data sourced exclusively from the official [WP.org Plugin Info API](https://codex.wordpress.org/WordPress.org_API)
+
+## What it is NOT
+
+- **Not a linter or static analyser.** It audits live WP.org metadata, not plugin source code — it can't see code quality, security vulnerabilities, or licence compliance inside the plugin zip.
+- **Not a guarantee.** Scores are heuristic. A plugin can score 90/100 and still have poorly written code; a new plugin scoring 45 may simply lack install history.
+- **Not a replacement for manual review.** Use the score as a triage signal when evaluating plugins to adopt or maintain, not as the final word.
 
 ---
 
-## Built by the team behind
-
-[Cirv Box](https://wordpress.org/plugins/cirv-box/) · [Cirv Guard](https://wordpress.org/plugins/cirv-guard/) · [Cirv Pulse](https://wordpress.org/plugins/cirv-pulse/) — WordPress plugins live on WP.org.
-
-**You might also like:** [github.com/NickCirv](https://github.com/NickCirv)
-
----
-
-## License
-
-MIT
-
-## Contributing
-
-PRs welcome! If you have a funny idea or improvement:
-
-1. Fork the repo
-2. Create your feature branch (`git checkout -b feature/amazing-idea`)
-3. Commit your changes
-4. Push to the branch (`git push origin feature/amazing-idea`)
-5. Open a Pull Request
-
-Found a bug? [Open an issue](https://github.com/NickCirv/wp-plugin-health/issues).
-
----
-
-If this made you mass-exhale through your nose, mass-hit that star button.
-
----
-
-If this made you mass-exhale through your nose, mass-hit that star button.
+<div align="center">
+<sub>Zero dependencies · Node 14+ · MIT · by <a href="https://github.com/NickCirv">NickCirv</a></sub>
+</div>
