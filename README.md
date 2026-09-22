@@ -1,145 +1,71 @@
-![wp-plugin-health — audit any WordPress plugin from the command line, 15 signals, 0–100 health score](assets/banner.png)
+![wp-plugin-health — Nicholas Ashkar editorial artwork](assets/nicholas-ashkar/banner.png)
 
-<div align="center">
+# wp-plugin-health
 
-**Instant WordPress plugin health reports from the command line. Zero dependencies. WP.org API data only.**
+Summarize WordPress.org plugin metadata through a local quality-signal rubric.
 
-![license](https://img.shields.io/badge/license-MIT-blue?labelColor=0B0A09)
-![dependencies](https://img.shields.io/badge/dependencies-0-brightgreen?labelColor=0B0A09)
-![node](https://img.shields.io/badge/node-%3E%3D14-brightgreen?labelColor=0B0A09)
-![signals](https://img.shields.io/badge/health%20signals-15-34D399?labelColor=0B0A09)
+Fetches public plugin information and scores recency, compatibility, support and other metadata signals. JSON and two-plugin comparison make findings inspectable.
 
-</div>
 
----
+<a id="install"></a>
 
-`wp-plugin-health` scores any WordPress.org plugin across 15 quality signals and returns a 0–100 health score — in under a second, straight from the WP.org Plugin Info API. No local install, no API keys, no rate limits.
+## Quickstart
 
-```
-WP PLUGIN HEALTH CHECK
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-Plugin:  Akismet Anti-spam: Spam Protection
-Author:  Automattic
-Version: 5.3.4
-Slug:    akismet
-
-Health Score: ████████████████░░░░ 83/100
-
-Vitals:
-  ⭐ Rating:              4.4/5               ✅
-  🗳️  Rating count:       956                 ✅
-  📊 Active installs:    5M+                 ✅
-  🔄 Last updated:       18 days ago         ✅
-  🧪 Tested up to:       WP 6.7              ✅
-  🐘 Requires PHP:       PHP 5.6             ⚠️  (Outdated PHP requirement)
-  🎫 Support resolved:   91%                 ✅
-  🏷️  Tags:               5 tags              ✅
-  💰 Donate link:        No                  ⚠️
-  ⬇️  Total downloads:    1,041,872,034       ✅
-  📦 Releases:           43 versions         ✅
-  ❓ FAQ section:        Yes                 ✅
-  📸 Screenshots:        None                ❌
-  👥 Contributors:       4                   ✅
-  🔗 Compatibility data: None                ✅
-
-Diagnosis: "Strong vitals. Could address: outdated php requirement."
-```
-
-## Install
-
-No install, no npm account — runs straight from GitHub with zero dependencies:
+Package runtime requirement: Node.js `>=20`. Git is needed to obtain this pinned source checkout.
 
 ```bash
-npx github:NickCirv/wp-plugin-health akismet
+git clone https://github.com/NickCirv/wp-plugin-health.git
+cd wp-plugin-health
+git checkout 8dcb5eb7f7e165bb160179aac293ed1692ad3d5b
+node index.js --help
 ```
+
+This source-derived example has not been executed in this review. Help is local. A plugin-slug command then requests WordPress.org metadata.
+
+
+
+
+<a id="the-15-health-signals"></a>
+
+<a id="json-output"></a>
+
+<a id="technical-details"></a>
 
 ## Usage
 
 ```bash
-# audit a plugin by slug
-npx github:NickCirv/wp-plugin-health akismet
-
-# machine-readable JSON
-npx github:NickCirv/wp-plugin-health akismet --json
-
-# compare two plugins side by side
-npx github:NickCirv/wp-plugin-health --compare akismet wordfence
-
-# show help
-npx github:NickCirv/wp-plugin-health --help
+node index.js akismet --json
+node index.js --compare akismet wordfence
 ```
 
-| Flag | Description |
-|------|-------------|
-| `--json` | Output full report as JSON (machine-readable) |
-| `--compare <slug1> <slug2>` | Compare two plugins side by side |
-| `--help`, `-h` | Show usage |
+These are example slugs, not recommendations. Review individual signals rather than relying on the aggregate score.
 
-## The 15 health signals
+[Command reference](docs/REFERENCE.md) covers arguments, modes and output controls.
 
-| # | Signal | Weight | What's checked |
-|---|--------|--------|----------------|
-| 1 | Active installs | 10 | >10K good, >100K great |
-| 2 | Star rating | 8 | Out of 5 stars |
-| 3 | Rating count | 5 | Volume makes rating reliable |
-| 4 | Last updated | 10 | <6 months ideal, >2 years flagged |
-| 5 | Tested up to | 8 | Should match latest WP version |
-| 6 | Requires PHP | 5 | PHP 8.0+ preferred |
-| 7 | Support resolved % | 8 | >75% = healthy author responsiveness |
-| 8 | Number of tags | 3 | 3–5 optimal for discoverability |
-| 9 | Donate link | 2 | Signals maintenance commitment |
-| 10 | Total downloads | 5 | Lifetime adoption |
-| 11 | Release count | 5 | Activity and longevity |
-| 12 | FAQ section | 4 | Documentation quality |
-| 13 | Screenshots | 4 | UX investment |
-| 14 | Contributors | 5 | Team vs solo maintainer |
-| 15 | Compatibility data | 3 | Community compatibility signals |
 
-## JSON output
+<a id="what-it-is-not"></a>
 
-```bash
-npx github:NickCirv/wp-plugin-health akismet --json
-```
+## Behavior and limits
 
-```json
-{
-  "slug": "akismet",
-  "name": "Akismet Anti-spam",
-  "author": "Automattic",
-  "version": "5.3.4",
-  "score": 83,
-  "signals": [
-    {
-      "key": "installs",
-      "label": "Active installs",
-      "value": "5M+",
-      "score": 10,
-      "max": 10,
-      "status": "good",
-      "note": null
-    }
-  ],
-  "diagnosis": "Strong vitals. Could address: outdated php requirement."
-}
-```
+This does not download or audit plugin code, test a WordPress installation or check vulnerabilities. The latest-WordPress helper is hard-coded to 6.7, so compatibility scoring is not a current release check. Support/usage metadata can be incomplete and a high score is not a security endorsement.
 
-## Technical details
+## Development
 
-- **Zero dependencies** — uses Node.js built-in `https` module only
-- **Node.js 14+** — no transpilation, no build step
-- **15s timeout** with `AbortController`-style destruction on hang
-- **Graceful errors** for non-existent slugs
-- Data sourced exclusively from the official [WP.org Plugin Info API](https://codex.wordpress.org/WordPress.org_API)
+Declared package scripts:
 
-## What it is NOT
+| Script | Command |
+| --- | --- |
+| `start` | `node index.js` |
+| `test` | `node index.js akismet && node index.js --json akismet &#124; node -e "const d = JSON.parse(require('fs').readFileSync('/dev/stdin','utf8')); process.exit(d.score > 0 ? 0 : 1)" && echo 'Tests passed'` |
 
-- **Not a linter or static analyser.** It audits live WP.org metadata, not plugin source code — it can't see code quality, security vulnerabilities, or licence compliance inside the plugin zip.
-- **Not a guarantee.** Scores are heuristic. A plugin can score 90/100 and still have poorly written code; a new plugin scoring 45 may simply lack install history.
-- **Not a replacement for manual review.** Use the score as a triage signal when evaluating plugins to adopt or maintain, not as the final word.
+The declared test performs live WordPress.org requests for akismet and asserts a positive score. It was not run; it is network-dependent and does not establish the accuracy of the scoring rubric.
 
----
+## Research
 
-<div align="center">
-<sub>Zero dependencies · Node 14+ · MIT · by <a href="https://github.com/NickCirv">NickCirv</a></sub>
-</div>
+[Source review and claim ledger](docs/RESEARCH.md) records revision `8dcb5eb7f7e1`, inspected files and verification gaps.
+
+## License and attribution
+
+Protected license and attribution files remain unchanged: [LICENSE](https://github.com/NickCirv/wp-plugin-health/blob/8dcb5eb7f7e165bb160179aac293ed1692ad3d5b/LICENSE).
+
+[Artwork credits](assets/nicholas-ashkar/CREDITS.md) · [Nicholas Ashkar — consulting](https://nicholashkar.com/#oxblood-contact)
